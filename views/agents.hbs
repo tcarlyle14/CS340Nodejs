@@ -1,0 +1,58 @@
+<!-- index.hbs -->
+<h1>Agents</h1>
+<p>Use the following page to view, add, edit, or delete agents.</p>
+[ <a href="/">Home</a> | <a href="/agents">Agents</a> | <a href="properties.html">Properties</a> | <a href="sellers.html">Sellers</a> | <a href="transactions.html">Transactions</a> | <a href="/agent_listings">Agent-Property</a> ]
+
+{{!-- Create a table --}}
+<table>
+
+    {{!-- Header section --}}
+    <thead>
+
+        {{!-- For just the first row, we print each key of the row object as a header cell so we
+        know what each column means when the page renders --}}
+        <tr>
+            {{#each data.[0]}}
+            <th>
+                {{@key}}
+            </th>
+            {{/each}}
+        </tr>
+    </thead>
+
+    {{!-- Body section --}}
+    <tbody>
+
+        {{!-- For each row, print the id, fname, lname, homeworld and age, in order --}}
+        {{#each data}}
+        <tr>
+            <td>{{this.AgentID}}</td>
+            <td>{{this.Name}}</td>
+            <td>{{this.Phone}}</td>
+            <td>{{this.Territory}}</td>
+            <td>{{this.HireDate}}</td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+
+<!-- /views/index.hbs -->
+<h2>Add New Agent</h2>
+<p>To add a new agent, please enter their information below and click `Submit`!</p>
+<form id="add-agent-form" method="POST" action="/add-agent-form">
+    <label for="input-name">Name: </label>
+    <input type="text" name="input-name" id="input-name" required>
+    
+    <label for="input-phone">Phone: </label>
+    <input type="text" name="input-phone" id="input-phone" required>
+    <label for="input-territory">Territory: </label>
+    <select name="input-territory" id="input-territory" required>
+        <option value="North">North</option>
+        <option value="South">South</option>
+        <option value="East">East</option>
+        <option value="West">West</option>
+    </select>
+    <label for="input-hiredate">Hire Date: </label>
+    <input type="date" name="input-hiredate" id="input-hiredate" required>
+    <input type="submit" value="Submit">
+</form>
