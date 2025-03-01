@@ -278,6 +278,70 @@ app.delete('/delete-property-ajax', function(req, res) {
     });
 });
 
+// View sellers
+app.get('/sellers', function(req, res) {
+    let query1 = "SELECT * FROM Sellers;"; // Query to get all sellers
+    db.pool.query(query1, function(error, rows, fields) {
+        if (error) {
+            console.log(error);
+            res.sendStatus(500);
+        } else {
+            res.render('sellers', { data: rows }); // Render the sellers page with the data
+        }
+    });
+});
+// Add a new seller
+app.post('/add-seller-form', function(req, res) {
+    let data = req.body;
+    let query1 = `
+        INSERT INTO Sellers (Name, Phone, Email) 
+        VALUES (?, ?, ?)
+    `;
+    db.pool.query(query1, [data['input-name'], data['input-phone'], data['input-email']], function(error, rows, fields) {
+        if (error) {
+            console.log(error);
+            res.sendStatus(400);
+        } else {
+            res.redirect('/sellers');
+        }
+    });
+});
+// Update a seller
+app.put('/update-seller-ajax', function(req, res) {
+    let data = req.body;
+    let sellerID = parseInt(data.sellerID);
+    let query1 = `
+        UPDATE Sellers 
+        SET Phone = ?, Email = ? 
+        WHERE SellerID = ?
+    `;
+    db.pool.query(query1, [data.phone, data.email, sellerID], function(error, rows, fields) {
+        if (error) {
+            console.log(error);
+            res.sendStatus(400);
+        } else {
+            res.json({
+                phone: data.phone,
+                email: data.email
+            });
+        }
+    });
+});
+// Delete a seller
+app.delete('/delete-seller-ajax', function(req, res) {
+    let data = req.body;
+    let sellerID = parseInt(data.id);
+    let query1 = `DELETE FROM Sellers WHERE SellerID = ?`;
+    db.pool.query(query1, [sellerID], function(error, rows, fields) {
+        if (error) {
+            console.log(error);
+            res.sendStatus(400);
+        } else {
+            res.sendStatus(204);
+        }
+    });
+});
+
 /*
     LISTENER
 */

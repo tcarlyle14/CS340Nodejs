@@ -1,0 +1,62 @@
+[ <a href="/">Home</a> | <a href="/agents">Agents</a> | <a href="/properties">Properties</a> | <a href="/sellers">Sellers</a> | <a href="/transactions">Transactions</a> | <a href="/agent_property">Agent-Property</a> ]
+<h1>Sellers</h1>
+<p>Use the following page to view, add, edit, or delete sellers.</p>
+<table id="sellers-table">
+    <thead>
+        <tr>
+            {{#each data.[0]}}
+            <th>
+                {{@key}}
+            </th>
+            {{/each}}
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each data}}
+        <tr data-value="{{this.SellerID}}">
+            <td>{{this.SellerID}}</td>
+            <td>{{this.Name}}</td>
+            <td>{{this.Phone}}</td>
+            <td>{{this.Email}}</td>
+            <td><button onclick="deleteSeller({{this.SellerID}})">Delete</button></td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+<h2>Add New Seller</h2>
+<p>To add a new seller, please enter their information below and click `Submit`!</p>
+<form id="add-seller-form" method="POST" action="/add-seller-form">
+    <label for="input-name">Name: </label>
+    <input type="text" name="input-name" id="input-name" required>
+    
+    <label for="input-phone">Phone: </label>
+    <input type="text" name="input-phone" id="input-phone" required>
+    
+    <label for="input-email">Email: </label>
+    <input type="email" name="input-email" id="input-email">
+    
+    <input type="submit" value="Submit">
+</form>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="/js/delete_seller.js"></script>
+<h2>Update Seller Information</h2>
+<p>Select a seller from the drop-down menu and update their details.</p>
+<form id="update-seller-form-ajax">
+    <label for="input-seller">Seller: </label>
+    <select name="input-seller" id="sellerSelect">
+        <option value="">Select a Seller</option>
+        {{#each data}}
+        <option value="{{this.SellerID}}">{{this.Name}}</option>
+        {{/each}}
+    </select>
+    
+    <label for="input-phone">Phone: </label>
+    <input type="text" name="input-phone" id="input-phone-update" required>
+    
+    <label for="input-email">Email: </label>
+    <input type="email" name="input-email" id="input-email-update">
+    
+    <input type="submit" value="Update">
+</form>
+<script src="/js/update_seller.js"></script>
