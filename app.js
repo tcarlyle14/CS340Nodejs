@@ -58,6 +58,46 @@ app.post('/add-agent-form', function(req, res) {
         }
     });
 });
+
+app.delete('/delete-agent-ajax', function(req, res, next) {
+    let data = req.body;
+    let agentID = parseInt(data.id);
+    let deleteAgentQuery = `DELETE FROM Agents WHERE AgentID = ?`;
+    db.pool.query(deleteAgentQuery, [agentID], function(error, rows, fields) {
+        if (error) {
+            console.log(error);
+            res.sendStatus(400);
+        } else {
+            res.sendStatus(204);
+        }
+    });
+});
+
+app.put('/update-agent-ajax', function(req, res, next) {
+    let data = req.body;
+    let agentID = parseInt(data.agentID);
+    let phone = data.phone;
+    let territory = data.territory;
+    let hireDate = data.hireDate;
+    let updateAgentQuery = `
+        UPDATE Agents 
+        SET Phone = ?, Territory = ?, HireDate = ? 
+        WHERE AgentID = ?
+    `;
+    db.pool.query(updateAgentQuery, [phone, territory, hireDate, agentID], function(error, rows, fields) {
+        if (error) {
+            console.log(error);
+            res.sendStatus(400);
+        } else {
+            // Send back the updated data to the client
+            res.json({
+                phone: phone,
+                territory: territory,
+                hireDate: hireDate
+            });
+        }
+    });
+});
 /*
     LISTENER
 */
