@@ -98,6 +98,186 @@ app.put('/update-agent-ajax', function(req, res, next) {
         }
     });
 });
+
+app.get('/agent_property', function(req, res) {
+    // Query to get agent-property relationships with property addresses and agent names
+    let query1 = `
+        SELECT ap.JunctionID, p.Address AS PropertyAddress, a.Name AS AgentName 
+        FROM AgentPropertyJunction ap 
+        JOIN Properties p ON ap.PropertyID = p.PropertyID 
+        JOIN Agents a ON ap.AgentID = a.AgentID;
+    `;
+    // Query to get all properties
+    let query2 = "SELECT PropertyID, Address FROM Properties;";
+    // Query to get all agents
+    let query3 = "SELECT AgentID, Name FROM Agents;";
+    // Execute the first query
+    db.pool.query(query1, function(error, agentPropertyRows, fields) {
+        if (error) {
+            console.log(error);
+            res.sendStatus(500);
+        } else {
+            // Execute the second query
+            db.pool.query(query2, function(error, propertyRows, fields) {
+                if (error) {
+                    console.log(error);
+                    res.sendStatus(500);
+                } else {
+                    // Execute the third query
+                    db.pool.query(query3, function(error, agentRows, fields) {
+                        if (error) {
+                            console.log(error);
+                            res.sendStatus(500);
+                        } else {
+                            // Render the template with the data
+                            res.render('agent_property', {
+                                data: agentPropertyRows,
+                                properties: propertyRows,
+                                agents: agentRows
+                            });
+                        }
+                    });
+                }
+            });
+        }
+    });
+});
+
+app.post('/add-agent-property-form', function(req, res) {
+    let data = req.body;
+    let query = `
+        INSERT INTO AgentPropertyJunction (PropertyID, AgentID) 
+        VALUES (?, ?)
+    `;
+    db.pool.query(query, [data['input-property-id'], data['input-agent-id']], function(error, rows, fields) {
+        if (error) {
+            console.log(error);
+            res.sendStatus(400);
+        } else {
+            res.redirect('/agent_property');
+        }
+    });
+});
+
+app.delete('/delete-agent-property-ajax', function(req, res) {
+    let data = req.body;
+    let junctionID = parseInt(data.id);
+    let query = `DELETE FROM AgentPropertyJunction WHERE JunctionID = ?`;
+    db.pool.query(query, [junctionID], function(error, rows, fields) {
+        if (error) {
+            console.log(error);
+            res.sendStatus(400);
+        } else {
+            res.sendStatus(204);
+        }
+    });
+});
+
+app.put('/update-agent-property-ajax', function(req, res) {
+    let data = req.body;
+    let junctionID = parseInt(data.junctionID);
+    let propertyID = data.propertyID;
+    let agentID = data.agentID;
+    let query = `
+        UPDATE AgentPropertyJunction 
+        SET PropertyID = ?, AgentID = ? 
+        WHERE JunctionID = ?
+    `;
+    db.pool.query(query, [propertyID, agentID, junctionID], function(error, rows, fields) {
+        if (error) {
+            console.log(error);
+            res.sendStatus(400);
+        } else {
+            res.json({
+                propertyID: propertyID,
+                agentID: agentID
+            });
+        }
+    });
+});
+
+// View properties
+app.get('/properties', function(req, res) {
+    let queryProperties = "SELECT * FROM Properties;";
+    let querySellers = "SELECT SellerID, Name FROM Sellers;"; // Fetch seller IDs and names
+    db.pool.query(queryProperties, function(error, propertyRows, fields) {
+        if (error) {
+            console.log(error);
+            res.sendStatus(500);
+        } else {
+            db.pool.query(querySellers, function(error, sellerRows, fields) {
+                if (error) {
+                    console.log(error);
+                    res.sendStatus(500);
+                } else {
+                    res.render('properties', { 
+                        data: propertyRows,
+                        sellers: sellerRows // Pass seller data to the template
+                    });
+                }
+            });
+        }
+    });
+});
+
+// Add a new property
+app.post('/add-property-form', function(req, res) {
+    let data = req.body;
+    let query = `
+        INSERT INTO Properties (Address, City, County, SaleStatus, ListingPrice, SaleDate, SellerID) 
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+    `;
+    db.pool.query(query, [data['input-address'], data['input-city'], data['input-county'], data['input-salestatus'], parseFloat(data['input-listingprice']), data['input-saledate'], parseInt(data['input-sellerid'])], function(error, rows, fields) {
+        if (error) {
+            console.log(error);
+            res.sendStatus(400);
+        } else {
+            res.redirect('/properties');
+        }
+    });
+});
+
+// Update a property
+app.put('/update-property-ajax', function(req, res) {
+    let data = req.body;
+    let propertyID = parseInt(data.propertyID);
+    let query = `
+        UPDATE Properties 
+        SET City = ?, County = ?, SaleStatus = ?, ListingPrice = ?, SaleDate = ?, SellerID = ? 
+        WHERE PropertyID = ?
+    `;
+    db.pool.query(query, [data.city, data.county, data.saleStatus, parseFloat(data.listingPrice), data.saleDate, parseInt(data.sellerID), propertyID], function(error, rows, fields) {
+        if (error) {
+            console.log(error);
+            res.sendStatus(400);
+        } else {
+            res.json({
+                city: data.city,
+                county: data.county,
+                saleStatus: data.saleStatus,
+                listingPrice: data.listingPrice,
+                saleDate: data.saleDate,
+                sellerID: data.sellerID
+            });
+        }
+    });
+});
+
+// Delete a property
+app.delete('/delete-property-ajax', function(req, res) {
+    let data = req.body;
+    let propertyID = parseInt(data.id);
+    let query = `DELETE FROM Properties WHERE PropertyID = ?`;
+    db.pool.query(query, [propertyID], function(error, rows, fields) {
+        if (error) {
+            console.log(error);
+            res.sendStatus(400);
+        } else {
+            res.sendStatus(204);
+        }
+    });
+});
+
 /*
     LISTENER
 */

@@ -1,0 +1,70 @@
+[ <a href="/">Home</a> | <a href="/agents">Agents</a> | <a href="/properties">Properties</a> | <a href="/sellers">Sellers</a> | <a href="/transactions">Transactions</a> | <a href="/agent_property">Agent-Property</a> ]
+<h1>Agent Property Junction</h1>
+<p>Use this page to view, add, edit, or delete agent-property relationships.</p>
+<table id="agent-property-table">
+    <thead>
+        <tr>
+            <th>JunctionID</th>
+            <th>Property Address</th>
+            <th>Agent Name</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each data}}
+        <tr data-value="{{this.JunctionID}}">
+            <td>{{this.JunctionID}}</td>
+            <td>{{this.PropertyAddress}}</td>
+            <td>{{this.AgentName}}</td>
+            <td><button onclick="deleteAgentProperty({{this.JunctionID}})">Delete</button></td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+<h2>Add New Agent-Property Relationship</h2>
+<form id="add-agent-property-form" method="POST" action="/add-agent-property-form">
+    <label for="input-property-id">Property: </label>
+    <select name="input-property-id" id="input-property-id" required>
+        {{#each properties}}
+        <option value="{{this.PropertyID}}">{{this.Address}}</option>
+        {{/each}}
+    </select>
+    
+    <label for="input-agent-id">Agent: </label>
+    <select name="input-agent-id" id="input-agent-id" required>
+        {{#each agents}}
+        <option value="{{this.AgentID}}">{{this.Name}}</option>
+        {{/each}}
+    </select>
+    
+    <input type="submit" value="Submit">
+</form>
+<h2>Update Agent-Property Relationship</h2>
+<form id="update-agent-property-form-ajax">
+    <label for="input-junction-id">Junction ID: </label>
+    <select name="input-junction-id" id="junctionSelect">
+        <option value="">Select a Junction</option>
+        {{#each data}}
+        <option value="{{this.JunctionID}}">{{this.JunctionID}}</option>
+        {{/each}}
+    </select>
+    
+    <label for="input-property-id-update">Property: </label>
+    <select name="input-property-id-update" id="input-property-id-update" required>
+        {{#each properties}}
+        <option value="{{this.PropertyID}}">{{this.Address}}</option>
+        {{/each}}
+    </select>
+    
+    <label for="input-agent-id-update">Agent: </label>
+    <select name="input-agent-id-update" id="input-agent-id-update" required>
+        {{#each agents}}
+        <option value="{{this.AgentID}}">{{this.Name}}</option>
+        {{/each}}
+    </select>
+    
+    <input type="submit" value="Update">
+</form>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="/js/delete_agent_property.js"></script>
+<script src="/js/update_agent_property.js"></script>
