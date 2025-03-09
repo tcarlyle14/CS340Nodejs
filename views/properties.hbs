@@ -21,7 +21,7 @@
             <td>{{this.County}}</td>
             <td>{{this.SaleStatus}}</td>
             <td>{{this.ListingPrice}}</td>
-            <td>{{this.SaleDate}}</td>
+            <td>{{#if this.SaleDate}}{{this.SaleDate}}{{else}}NULL{{/if}}</td>
             <td>{{this.SellerID}}</td>
             <td><button onclick="deleteProperty({{this.PropertyID}})">Delete</button></td>
         </tr>
@@ -47,7 +47,7 @@
     <label for="input-listingprice">Listing Price: </label>
     <input type="number" step="0.01" name="input-listingprice" id="input-listingprice" required>
     
-    <label for="input-saledate">Sale Date: </label>
+    <label for="input-saledate">Sale Date (Optional): </label>
     <input type="date" name="input-saledate" id="input-saledate">
     
     <label for="input-sellerid">Seller: </label>
@@ -86,7 +86,7 @@
     <label for="input-listingprice-update">Listing Price: </label>
     <input type="number" step="0.01" name="input-listingprice" id="input-listingprice-update" required>
     
-    <label for="input-saledate-update">Sale Date: </label>
+    <label for="input-saledate-update">Sale Date (Optional): </label>
     <input type="date" name="input-saledate" id="input-saledate-update">
     
     <label for="input-sellerid-update">Seller: </label>
