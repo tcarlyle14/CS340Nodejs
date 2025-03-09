@@ -7,7 +7,7 @@ document.getElementById('update-property-form-ajax').addEventListener('submit', 
     let county = document.getElementById('input-county-update').value;
     let saleStatus = document.getElementById('input-salestatus-update').value;
     let listingPrice = document.getElementById('input-listingprice-update').value;
-    let saleDate = document.getElementById('input-saledate-update').value;
+    let saleDate = document.getElementById('input-saledate-update').value || null;
     let sellerID = document.getElementById('input-sellerid-update').value;
     // Get selected property ID
     let propertyID = propertySelect.value;
@@ -29,6 +29,7 @@ document.getElementById('update-property-form-ajax').addEventListener('submit', 
         if (xhttp.readyState == 4 && xhttp.status == 200) {
             // Update the table row
             updateRow(xhttp.responseText, propertyID);
+            location.reload();
         } else if (xhttp.readyState == 4) {
             console.log("Error updating property.");
         }

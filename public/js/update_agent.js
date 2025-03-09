@@ -31,6 +31,7 @@ updateAgentForm.addEventListener("submit", function (e) {
         if (xhttp.readyState == 4 && xhttp.status == 200) {
             // Update the row in the table
             updateRow(xhttp.response, agentID);
+            location.reload();
         } else if (xhttp.readyState == 4 && xhttp.status != 200) {
             console.log("There was an error with the input.");
         }
