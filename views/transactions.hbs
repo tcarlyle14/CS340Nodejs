@@ -1,0 +1,105 @@
+[ <a href="/">Home</a> | <a href="/agents">Agents</a> | <a href="/properties">Properties</a> | <a href="/sellers">Sellers</a> | <a href="/transactions">Transactions</a> | <a href="/agent_property">Agent-Property</a> ]
+<h1>Transactions</h1>
+<p>Use the following page to view, add, edit, or delete transactions.</p>
+<table id="transactions-table">
+    <thead>
+        <tr>
+            <th>Transaction ID</th>
+            <th>Commission Percent</th>
+            <th>Commission Amount</th>
+            <th>Transaction Date</th>
+            <th>Property Address</th>
+            <th>Seller Name</th>
+            <th>Agent Name</th>
+            <th>Sale Price</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{#each data}}
+        <tr data-value="{{this.TransactionID}}">
+            <td>{{this.TransactionID}}</td>
+            <td>{{this.CommissionPercent}}</td>
+            <td>{{this.CommissionAmount}}</td>
+            <td>{{this.TransactionDate}}</td>
+            <td>{{this.PropertyAddress}}</td>
+            <td>{{this.SellerName}}</td>
+            <td>{{this.AgentName}}</td>
+            <td>{{this.SalePrice}}</td>
+            <td><button onclick="deleteTransaction({{this.TransactionID}})">Delete</button></td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+<h2>Add New Transaction</h2>
+<p>To add a new transaction, please enter the information below and click `Submit`!</p>
+<form id="add-transaction-form" method="POST" action="/add-transaction-form">
+    <label for="input-commission-percent">Commission Percent: </label>
+    <input type="number" step="0.01" name="input-commission-percent" id="input-commission-percent" required>
+    <label for="input-commission-amount">Commission Amount: </label>
+    <input type="number" step="0.01" name="input-commission-amount" id="input-commission-amount" required>
+    <label for="input-transaction-date">Transaction Date: </label>
+    <input type="date" name="input-transaction-date" id="input-transaction-date" required>
+    <label for="input-property-id">Property: </label>
+    <select name="input-property-id" id="input-property-id" required>
+        {{#each properties}}
+        <option value="{{this.PropertyID}}">{{this.Address}}</option>
+        {{/each}}
+    </select>
+    <label for="input-seller-id">Seller: </label>
+    <select name="input-seller-id" id="input-seller-id" required>
+        {{#each sellers}}
+        <option value="{{this.SellerID}}">{{this.Name}}</option>
+        {{/each}}
+    </select>
+    <label for="input-agent-id">Agent: </label>
+    <select name="input-agent-id" id="input-agent-id" required>
+        {{#each agents}}
+        <option value="{{this.AgentID}}">{{this.Name}}</option>
+        {{/each}}
+    </select>
+    <label for="input-sale-price">Sale Price: </label>
+    <input type="number" step="0.01" name="input-sale-price" id="input-sale-price" required>
+    <input type="submit" value="Submit">
+</form>
+<h2>Update Transaction Information</h2>
+<p>Select a transaction from the drop-down menu and update its details.</p>
+<form id="update-transaction-form-ajax">
+    <label for="input-transaction">Transaction: </label>
+    <select name="input-transaction" id="transactionSelect">
+        <option value="">Select a Transaction</option>
+        {{#each data}}
+        <option value="{{this.TransactionID}}">{{this.TransactionID}}</option>
+        {{/each}}
+    </select>
+    <label for="input-commission-percent">Commission Percent: </label>
+    <input type="number" step="0.01" name="input-commission-percent" id="input-commission-percent-update" required>
+    <label for="input-commission-amount">Commission Amount: </label>
+    <input type="number" step="0.01" name="input-commission-amount" id="input-commission-amount-update" required>
+    <label for="input-transaction-date">Transaction Date: </label>
+    <input type="date" name="input-transaction-date" id="input-transaction-date-update" required>
+    <label for="input-property-id">Property: </label>
+    <select name="input-property-id" id="input-property-id-update" required>
+        {{#each properties}}
+        <option value="{{this.PropertyID}}">{{this.Address}}</option>
+        {{/each}}
+    </select>
+    <label for="input-seller-id">Seller: </label>
+    <select name="input-seller-id" id="input-seller-id-update" required>
+        {{#each sellers}}
+        <option value="{{this.SellerID}}">{{this.Name}}</option>
+        {{/each}}
+    </select>
+    <label for="input-agent-id">Agent: </label>
+    <select name="input-agent-id" id="input-agent-id-update" required>
+        {{#each agents}}
+        <option value="{{this.AgentID}}">{{this.Name}}</option>
+        {{/each}}
+    </select>
+    <label for="input-sale-price">Sale Price: </label>
+    <input type="number" step="0.01" name="input-sale-price" id="input-sale-price-update" required>
+    <input type="submit" value="Update">
+</form>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="/js/delete_transaction.js"></script>
+<script src="/js/update_transaction.js"></script>

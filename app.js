@@ -342,6 +342,129 @@ app.delete('/delete-seller-ajax', function(req, res) {
     });
 });
 
+// View all sale transactions
+app.get('/transactions', function(req, res) {
+    let queryTransactions = `
+        SELECT st.TransactionID, st.CommissionPercent, st.CommissionAmount, st.TransactionDate, 
+               st.SalePrice, p.Address AS PropertyAddress, s.Name AS SellerName, a.Name AS AgentName
+        FROM SaleTransactions st
+        JOIN Properties p ON st.PropertyID = p.PropertyID
+        JOIN Sellers s ON st.SellerID = s.SellerID
+        JOIN Agents a ON st.AgentID = a.AgentID;
+    `;
+    let queryProperties = "SELECT PropertyID, Address FROM Properties;";
+    let querySellers = "SELECT SellerID, Name FROM Sellers;";
+    let queryAgents = "SELECT AgentID, Name FROM Agents;";
+    
+    db.pool.query(queryTransactions, function(error, transactionRows, fields) {
+        if (error) {
+            console.log(error);
+            res.sendStatus(500);
+        } else {
+            db.pool.query(queryProperties, function(error, propertyRows, fields) {
+                if (error) {
+                    console.log(error);
+                    res.sendStatus(500);
+                } else {
+                    db.pool.query(querySellers, function(error, sellerRows, fields) {
+                        if (error) {
+                            console.log(error);
+                            res.sendStatus(500);
+                        } else {
+                            db.pool.query(queryAgents, function(error, agentRows, fields) {
+                                if (error) {
+                                    console.log(error);
+                                    res.sendStatus(500);
+                                } else {
+                                    res.render('transactions', {
+                                        data: transactionRows,
+                                        properties: propertyRows,
+                                        sellers: sellerRows,
+                                        agents: agentRows
+                                    });
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+        }
+    });
+});
+// Add a new sale transaction
+app.post('/add-transaction-form', function(req, res) {
+    let data = req.body;
+    let query = `
+        INSERT INTO SaleTransactions (CommissionPercent, CommissionAmount, TransactionDate, PropertyID, SellerID, AgentID, SalePrice) 
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+    `;
+    db.pool.query(query, [
+        parseFloat(data['input-commission-percent']),
+        parseFloat(data['input-commission-amount']),
+        data['input-transaction-date'],
+        parseInt(data['input-property-id']),
+        parseInt(data['input-seller-id']),
+        parseInt(data['input-agent-id']),
+        parseFloat(data['input-sale-price'])
+    ], function(error, rows, fields) {
+        if (error) {
+            console.log(error);
+            res.sendStatus(400);
+        } else {
+            res.redirect('/transactions');
+        }
+    });
+});
+// Update a sale transaction
+app.put('/update-transaction-ajax', function(req, res) {
+    let data = req.body;
+    let transactionID = parseInt(data.transactionID);
+    let query = `
+        UPDATE SaleTransactions 
+        SET CommissionPercent = ?, CommissionAmount = ?, TransactionDate = ?, PropertyID = ?, SellerID = ?, AgentID = ?, SalePrice = ? 
+        WHERE TransactionID = ?
+    `;
+    db.pool.query(query, [
+        parseFloat(data.commissionPercent),
+        parseFloat(data.commissionAmount),
+        data.transactionDate,
+        parseInt(data.propertyID),
+        parseInt(data.sellerID),
+        parseInt(data.agentID),
+        parseFloat(data.salePrice),
+        transactionID
+    ], function(error, rows, fields) {
+        if (error) {
+            console.log(error);
+            res.sendStatus(400);
+        } else {
+            res.json({
+                commissionPercent: data.commissionPercent,
+                commissionAmount: data.commissionAmount,
+                transactionDate: data.transactionDate,
+                propertyID: data.propertyID,
+                sellerID: data.sellerID,
+                agentID: data.agentID,
+                salePrice: data.salePrice
+            });
+        }
+    });
+});
+// Delete a sale transaction
+app.delete('/delete-transaction-ajax', function(req, res) {
+    let data = req.body;
+    let transactionID = parseInt(data.id);
+    let query = `DELETE FROM SaleTransactions WHERE TransactionID = ?`;
+    db.pool.query(query, [transactionID], function(error, rows, fields) {
+        if (error) {
+            console.log(error);
+            res.sendStatus(400);
+        } else {
+            res.sendStatus(204);
+        }
+    });
+});
+
 /*
     LISTENER
 */
