@@ -27,16 +27,28 @@ app.set('view engine', '.hbs');                 // Tell express to use the handl
 app.get('/', function(req, res) {
     res.render('home');
 });
-//agents
-app.get('/agents', function(req, res)
-    {  
-        let query1 = "SELECT * FROM Agents;";               // Define our query
-
-        db.pool.query(query1, function(error, rows, fields){    // Execute the query
-
-            res.render('agents', {data: rows});                  // Render the index.hbs file, and also send the renderer
-        })                                                      // an object where 'data' is equal to the 'rows' we
-    });                                                         // received back from the query
+app.get('/agents', function(req, res) {  
+    let query1 = "SELECT * FROM Agents;"; // Define our query
+    db.pool.query(query1, function(error, rows, fields) { // Execute the query
+        if (error) {
+            console.log(error);
+            res.sendStatus(500);
+        } else {
+            // Format the HireDate for each agent
+            rows.forEach(agent => {
+                if (agent.HireDate) {
+                    agent.HireDate = formatDate(agent.HireDate);
+                }
+            });
+            res.render('agents', { data: rows }); // Render the agents.hbs file with formatted data
+        }
+    });
+});
+// Helper function to format the date
+function formatDate(dateString) {
+    const options = { year: 'numeric', month: 'short', day: 'numeric' };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+}
 
 app.post('/add-agent-form', function(req, res) {
     // Capture the incoming data and parse it back to a JS object
@@ -205,6 +217,11 @@ app.get('/properties', function(req, res) {
             console.log(error);
             res.sendStatus(500);
         } else {
+            propertyRows.forEach(property => {
+                if (property.SaleDate) {
+                    property.SaleDate = formatDate(property.SaleDate);
+                }
+            });
             db.pool.query(querySellers, function(error, sellerRows, fields) {
                 if (error) {
                     console.log(error);
@@ -219,6 +236,10 @@ app.get('/properties', function(req, res) {
         }
     });
 });
+function formatDate(dateString) {
+    const options = { year: 'numeric', month: 'short', day: 'numeric' };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+}
 
 // Add a new property
 app.post('/add-property-form', function(req, res) {
@@ -372,6 +393,11 @@ app.get('/transactions', function(req, res) {
             console.log(error);
             res.sendStatus(500);
         } else {
+            transactionRows.forEach(transaction => {
+                if (transaction.TransactionDate) {
+                    transaction.TransactionDate = formatDate(transaction.TransactionDate);
+                }
+            });
             db.pool.query(queryProperties, function(error, propertyRows, fields) {
                 if (error) {
                     console.log(error);
@@ -402,6 +428,10 @@ app.get('/transactions', function(req, res) {
         }
     });
 });
+function formatDate(dateString) {
+    const options = { year: 'numeric', month: 'short', day: 'numeric' };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+}
 // Add a new sale transaction
 app.post('/add-transaction-form', function(req, res) {
     let data = req.body;
