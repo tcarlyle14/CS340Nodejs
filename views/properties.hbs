@@ -4,11 +4,14 @@
 <table id="properties-table">
     <thead>
         <tr>
-            {{#each data.[0]}}
-            <th>
-                {{@key}}
-            </th>
-            {{/each}}
+            <th>PropertyID</th>
+            <th>Address</th>
+            <th>City</th>
+            <th>County</th>
+            <th>Sales Status</th>
+            <th>Listing Price</th>
+            <th>Sale Date</th>
+            <th>Seller</th>
             <th>Delete</th>
         </tr>
     </thead>
@@ -22,7 +25,7 @@
             <td>{{this.SaleStatus}}</td>
             <td>{{this.ListingPrice}}</td>
             <td>{{#if this.SaleDate}}{{this.SaleDate}}{{else}}NULL{{/if}}</td>
-            <td>{{#if this.SellerID}}{{this.SellerID}}{{else}}NULL{{/if}}</td>
+            <td>{{#if this.SellerName}}{{this.SellerName}}{{else}}NULL{{/if}}</td>
             <td><button onclick="deleteProperty({{this.PropertyID}})">Delete</button></td>
         </tr>
         {{/each}}

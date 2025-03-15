@@ -210,7 +210,12 @@ app.put('/update-agent-property-ajax', function(req, res) {
 
 // View properties
 app.get('/properties', function(req, res) {
-    let queryProperties = "SELECT * FROM Properties;";
+    let queryProperties = `
+        SELECT p.PropertyID, p.Address, p.City, p.County, p.SaleStatus, 
+               p.ListingPrice, p.SaleDate, p.SellerID, s.Name AS SellerName
+        FROM Properties p
+        LEFT JOIN Sellers s ON p.SellerID = s.SellerID;
+    `;
     let querySellers = "SELECT SellerID, Name FROM Sellers;"; // Fetch seller IDs and names
     db.pool.query(queryProperties, function(error, propertyRows, fields) {
         if (error) {
