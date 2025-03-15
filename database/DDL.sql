@@ -55,8 +55,8 @@ CREATE TABLE SaleTransactions (
 # Create AgentPropertyJunction table
 CREATE TABLE AgentPropertyJunction (  -- made adjustment based on comments
     JunctionID INT AUTO_INCREMENT PRIMARY KEY,   -- Unique ID for each entry
-    PropertyID INT NOT NULL,
-    AgentID INT NOT NULL,
+    PropertyID INT NULL,
+    AgentID INT NULL,
     FOREIGN KEY (PropertyID) REFERENCES Properties(PropertyID) ON DELETE CASCADE,
     FOREIGN KEY (AgentID) REFERENCES Agents(AgentID) ON DELETE CASCADE
 );

@@ -221,7 +221,7 @@ app.get('/properties', function(req, res) {
 });
 
 // Add a new property
-app.post('/add-property-ajax', function(req, res) {
+app.post('/add-property-form', function(req, res) {
     let data = req.body;
     let query = `
         INSERT INTO Properties (City, County, SaleStatus, ListingPrice, SaleDate, SellerID) 
