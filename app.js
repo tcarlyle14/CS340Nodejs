@@ -223,26 +223,25 @@ app.get('/properties', function(req, res) {
 // Add a new property
 app.post('/add-property-form', function(req, res) {
     let data = req.body;
+    let sellerID = data['input-sellerid'] ? parseInt(data['input-sellerid']) : null; // Convert empty string to null
     let query = `
-        INSERT INTO Properties (City, County, SaleStatus, ListingPrice, SaleDate, SellerID) 
-        VALUES (?, ?, ?, ?, ?, ?)
+        INSERT INTO Properties (Address, City, County, SaleStatus, ListingPrice, SaleDate, SellerID) 
+        VALUES (?, ?, ?, ?, ?, ?, ?)
     `;
-    db.pool.query(query, [data.city, data.county, data.saleStatus, parseFloat(data.listingPrice), data.saleDate, parseInt(data.sellerID)], function(error, results, fields) {
+    db.pool.query(query, [
+        data['input-address'],
+        data['input-city'],
+        data['input-county'],
+        data['input-salestatus'],
+        parseFloat(data['input-listingprice']),
+        data['input-saledate'] || null, // Handle optional SaleDate
+        sellerID
+    ], function(error, results, fields) {
         if (error) {
             console.log(error);
             res.sendStatus(400);
         } else {
-            // Assuming the table has an auto-incrementing primary key
-            let newPropertyID = results.insertId;
-            res.json({
-                propertyID: newPropertyID,
-                city: data.city,
-                county: data.county,
-                saleStatus: data.saleStatus,
-                listingPrice: data.listingPrice,
-                saleDate: data.saleDate,
-                sellerID: data.sellerID
-            });
+            res.redirect('/properties');
         }
     });
 });
@@ -251,12 +250,14 @@ app.post('/add-property-form', function(req, res) {
 app.put('/update-property-ajax', function(req, res) {
     let data = req.body;
     let propertyID = parseInt(data.propertyID);
+    let sellerID = data.sellerID ? parseInt(data.sellerID) : null; // Set to null if empty
+    let saleDate = data.saleDate || null;
     let query = `
         UPDATE Properties 
         SET City = ?, County = ?, SaleStatus = ?, ListingPrice = ?, SaleDate = ?, SellerID = ? 
         WHERE PropertyID = ?
     `;
-    db.pool.query(query, [data.city, data.county, data.saleStatus, parseFloat(data.listingPrice), data.saleDate, parseInt(data.sellerID), propertyID], function(error, rows, fields) {
+    db.pool.query(query, [data.city, data.county, data.saleStatus, parseFloat(data.listingPrice), data.saleDate, sellerID, propertyID], function(error, rows, fields) {
         if (error) {
             console.log(error);
             res.sendStatus(400);
@@ -267,7 +268,7 @@ app.put('/update-property-ajax', function(req, res) {
                 saleStatus: data.saleStatus,
                 listingPrice: data.listingPrice,
                 saleDate: data.saleDate,
-                sellerID: data.sellerID
+                sellerID: sellerID
             });
         }
     });

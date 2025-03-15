@@ -7,8 +7,8 @@ document.getElementById('update-property-form-ajax').addEventListener('submit', 
     let county = document.getElementById('input-county-update').value;
     let saleStatus = document.getElementById('input-salestatus-update').value;
     let listingPrice = document.getElementById('input-listingprice-update').value;
-    let saleDate = document.getElementById('input-saledate-update').value;
-    let sellerID = document.getElementById('input-sellerid-update').value;
+    let saleDate = document.getElementById('input-saledate-update').value || null;
+    const sellerID = document.getElementById('input-sellerid-update').value || null;
     // Get selected property ID
     let propertyID = propertySelect.value;
     // Prepare data
@@ -47,7 +47,7 @@ function updateRow(data, propertyID) {
             updateRowIndex.getElementsByTagName("td")[4].innerHTML = parsedData.saleStatus;
             updateRowIndex.getElementsByTagName("td")[5].innerHTML = parsedData.listingPrice;
             updateRowIndex.getElementsByTagName("td")[6].innerHTML = parsedData.saleDate;
-            updateRowIndex.getElementsByTagName("td")[7].innerHTML = parsedData.sellerID;
+            updateRowIndex.getElementsByTagName("td")[7].innerHTML = data.sellerID ? data.sellerID : 'NULL';
         }
     }
 }

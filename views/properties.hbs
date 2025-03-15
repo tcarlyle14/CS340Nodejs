@@ -22,7 +22,7 @@
             <td>{{this.SaleStatus}}</td>
             <td>{{this.ListingPrice}}</td>
             <td>{{#if this.SaleDate}}{{this.SaleDate}}{{else}}NULL{{/if}}</td>
-            <td>{{this.SellerID}}</td>
+            <td>{{#if this.SellerID}}{{this.SellerID}}{{else}}NULL{{/if}}</td>
             <td><button onclick="deleteProperty({{this.PropertyID}})">Delete</button></td>
         </tr>
         {{/each}}
@@ -50,9 +50,9 @@
     <label for="input-saledate">Sale Date (Optional): </label>
     <input type="date" name="input-saledate" id="input-saledate">
     
-    <label for="input-sellerid">Seller: </label>
-    <select name="input-sellerid" id="input-sellerid" required>
-        <option value="">Select a Seller</option>
+    <label for="input-sellerid">Seller (Optional): </label>
+    <select name="input-sellerid" id="input-sellerid">
+        <option value="">NULL</option>
         {{#each sellers}}
         <option value="{{this.SellerID}}">{{this.Name}}</option>
         {{/each}}
@@ -62,6 +62,7 @@
 </form>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script src="/js/delete_property.js"></script>
+
 
 <h2>Update Property Information</h2>
 <p>Select a property from the drop-down menu and update its details.</p>
@@ -89,9 +90,9 @@
     <label for="input-saledate-update">Sale Date (Optional): </label>
     <input type="date" name="input-saledate" id="input-saledate-update">
     
-    <label for="input-sellerid-update">Seller: </label>
-    <select name="input-sellerid" id="input-sellerid-update" required>
-        <option value="">Select a Seller</option>
+    <label for="input-sellerid-update">Seller (Optional): </label>
+    <select name="input-sellerid" id="input-sellerid-update">
+        <option value="">NULL</option>
         {{#each sellers}}
         <option value="{{this.SellerID}}">{{this.Name}}</option>
         {{/each}}
