@@ -1,6 +1,16 @@
+<!--Citations for the following file
+Date: 03/15/2025
+All code is based on the CS340 starter code
+Title: CS 340 React Starter Guide
+Type: Source Code
+Author(s): Zac Maes, Devin Daniels, Michael Curry, Brianna Romrey
+Code Version: 41f83aa+
+URL: https://github.com/osu-cs340-ecampus/react-starter-app -->
+
 [ <a href="/">Home</a> | <a href="/agents">Agents</a> | <a href="/properties">Properties</a> | <a href="/sellers">Sellers</a> | <a href="/transactions">Transactions</a> | <a href="/agent_property">Agent-Property</a> ]
 <h1>Agents</h1>
 <p>Use the following page to view, add, edit, or delete agents.</p>
+<!-- Table to display agent data -->
 <table id="agents-table">
     <thead>
         <tr>
@@ -25,6 +35,7 @@
         {{/each}}
     </tbody>
 </table>
+<!-- Form to add new agent -->
 <h2>Add New Agent</h2>
 <p>To add a new agent, please enter their information below and click `Submit`!</p>
 <form id="add-agent-form" method="POST" action="/add-agent-form">
@@ -46,6 +57,7 @@
 </form>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script src="/js/delete_agent.js"></script>
+<!-- Update agent form -->
 <h2>Update Agent Information</h2>
 <p>Select an agent from the drop-down menu and update their details.</p>
 <form id="update-agent-form-ajax">

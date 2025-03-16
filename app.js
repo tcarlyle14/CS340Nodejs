@@ -1,4 +1,11 @@
-// App.js
+// Citations for the following file
+// Date: 03/15/2025
+// All code is based on the CS340 starter code
+// Title: CS 340 React Starter Guide
+// Type: Source Code
+// Author(s): Zac Maes, Devin Daniels, Michael Curry, Brianna Romrey
+// Code Version: 41f83aa+
+// URL: https://github.com/osu-cs340-ecampus/react-starter-app
 
 /*
     SETUP
@@ -27,6 +34,8 @@ app.set('view engine', '.hbs');                 // Tell express to use the handl
 app.get('/', function(req, res) {
     res.render('home');
 });
+
+// view agents
 app.get('/agents', function(req, res) {  
     let query1 = "SELECT * FROM Agents;"; // Define our query
     db.pool.query(query1, function(error, rows, fields) { // Execute the query
@@ -50,6 +59,7 @@ function formatDate(dateString) {
     return new Date(dateString).toLocaleDateString(undefined, options);
 }
 
+// add agents
 app.post('/add-agent-form', function(req, res) {
     // Capture the incoming data and parse it back to a JS object
     let data = req.body;
@@ -71,6 +81,7 @@ app.post('/add-agent-form', function(req, res) {
     });
 });
 
+// delete route for agents
 app.delete('/delete-agent-ajax', function(req, res, next) {
     let data = req.body;
     let agentID = parseInt(data.id);
@@ -85,6 +96,7 @@ app.delete('/delete-agent-ajax', function(req, res, next) {
     });
 });
 
+//update agent route
 app.put('/update-agent-ajax', function(req, res, next) {
     let data = req.body;
     let agentID = parseInt(data.agentID);
@@ -111,6 +123,7 @@ app.put('/update-agent-ajax', function(req, res, next) {
     });
 });
 
+// view agent property route
 app.get('/agent_property', function(req, res) {
     // Query to get agent-property relationships with property addresses and agent names
     let query1 = `
@@ -155,6 +168,7 @@ app.get('/agent_property', function(req, res) {
     });
 });
 
+//add agent property
 app.post('/add-agent-property-form', function(req, res) {
     let data = req.body;
     let query = `
@@ -171,6 +185,7 @@ app.post('/add-agent-property-form', function(req, res) {
     });
 });
 
+// delete agent property
 app.delete('/delete-agent-property-ajax', function(req, res) {
     let data = req.body;
     let junctionID = parseInt(data.id);
@@ -185,6 +200,7 @@ app.delete('/delete-agent-property-ajax', function(req, res) {
     });
 });
 
+//update agent property
 app.put('/update-agent-property-ajax', function(req, res) {
     let data = req.body;
     let junctionID = parseInt(data.junctionID);

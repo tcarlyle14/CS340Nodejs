@@ -1,8 +1,16 @@
+// Citations for the following file
+// Date: 03/15/2025
+// All code is based on the CS340 starter code
+// Title: CS 340 React Starter Guide
+// Type: Source Code
+// Author(s): Zac Maes, Devin Daniels, Michael Curry, Brianna Romrey
+// Code Version: 41f83aa+
+// URL: https://github.com/osu-cs340-ecampus/react-starter-app
+
 // Get the form element we need to modify
 let updateAgentPropertyForm = document.getElementById('update-agent-property-form-ajax');
 // Add an event listener to handle form submission
 updateAgentPropertyForm.addEventListener("submit", function (e) {
-    // Prevent the form from submitting the traditional way
     e.preventDefault();
     // Get form fields we need to get data from
     let inputJunction = document.getElementById("junctionSelect");

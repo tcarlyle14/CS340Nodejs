@@ -1,4 +1,12 @@
-// public/js/update_property.js
+// Citations for the following file
+// Date: 03/15/2025
+// All code is based on the CS340 starter code
+// Title: CS 340 React Starter Guide
+// Type: Source Code
+// Author(s): Zac Maes, Devin Daniels, Michael Curry, Brianna Romrey
+// Code Version: 41f83aa+
+// URL: https://github.com/osu-cs340-ecampus/react-starter-app
+
 document.getElementById('update-property-form-ajax').addEventListener('submit', function (e) {
     e.preventDefault();
     // Get form fields
@@ -36,6 +44,8 @@ document.getElementById('update-property-form-ajax').addEventListener('submit', 
     };
     xhttp.send(JSON.stringify(data));
 });
+
+// Updates a row in the properties table based on the provided data and property ID.
 function updateRow(data, propertyID) {
     let parsedData = JSON.parse(data);
     let table = document.getElementById("properties-table");

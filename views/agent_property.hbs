@@ -1,4 +1,14 @@
+<!--Citations for the following file
+Date: 03/15/2025
+All code is based on the CS340 starter code
+Title: CS 340 React Starter Guide
+Type: Source Code
+Author(s): Zac Maes, Devin Daniels, Michael Curry, Brianna Romrey
+Code Version: 41f83aa+
+URL: https://github.com/osu-cs340-ecampus/react-starter-app -->
+
 [ <a href="/">Home</a> | <a href="/agents">Agents</a> | <a href="/properties">Properties</a> | <a href="/sellers">Sellers</a> | <a href="/transactions">Transactions</a> | <a href="/agent_property">Agent-Property</a> ]
+<!-- Table to display agent-property junction data -->
 <h1>Agent Property Junction</h1>
 <p>Use this page to view, add, edit, or delete agent-property relationships.</p>
 <table id="agent-property-table">
@@ -12,6 +22,7 @@
     </thead>
     <tbody>
         {{#each data}}
+        <!-- Loop through each item in the data array and create a table row -->
         <tr data-value="{{this.JunctionID}}">
             <td>{{this.JunctionID}}</td>
             <td>{{this.PropertyAddress}}</td>
@@ -21,6 +32,7 @@
         {{/each}}
     </tbody>
 </table>
+<!-- Form to add new agent-property relationship -->
 <h2>Add New Agent-Property Relationship</h2>
 <form id="add-agent-property-form" method="POST" action="/add-agent-property-form">
     <label for="input-property-id">Property: </label>
@@ -39,6 +51,7 @@
     
     <input type="submit" value="Submit">
 </form>
+<!-- Form to update existing agent-property relationship -->
 <h2>Update Agent-Property Relationship</h2>
 <form id="update-agent-property-form-ajax">
     <label for="input-junction-id">Junction ID: </label>

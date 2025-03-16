@@ -1,8 +1,16 @@
+// Citations for the following file
+// Date: 03/15/2025
+// All code is based on the CS340 starter code
+// Title: CS 340 React Starter Guide
+// Type: Source Code
+// Author(s): Zac Maes, Devin Daniels, Michael Curry, Brianna Romrey
+// Code Version: 41f83aa+
+// URL: https://github.com/osu-cs340-ecampus/react-starter-app
+
 // Get the objects we need to modify
 let updateTransactionForm = document.getElementById('update-transaction-form-ajax');
 // Modify the objects we need
 updateTransactionForm.addEventListener("submit", function (e) {
-    // Prevent the form from submitting
     e.preventDefault();
     // Get form fields we need to get data from
     let inputTransaction = document.getElementById("transactionSelect");

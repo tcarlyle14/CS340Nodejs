@@ -1,6 +1,16 @@
+<!--Citations for the following file
+Date: 03/15/2025
+All code is based on the CS340 starter code
+Title: CS 340 React Starter Guide
+Type: Source Code
+Author(s): Zac Maes, Devin Daniels, Michael Curry, Brianna Romrey
+Code Version: 41f83aa+
+URL: https://github.com/osu-cs340-ecampus/react-starter-app -->
+
 [ <a href="/">Home</a> | <a href="/agents">Agents</a> | <a href="/properties">Properties</a> | <a href="/sellers">Sellers</a> | <a href="/transactions">Transactions</a> | <a href="/agent_property">Agent-Property</a> ]
 <h1>Properties</h1>
 <p>Use the following page to view, add, edit, or delete properties.</p>
+<!-- Table to display property data -->
 <table id="properties-table">
     <thead>
         <tr>
@@ -31,7 +41,7 @@
         {{/each}}
     </tbody>
 </table>
-
+<!-- Form to add new property -->
 <h2>Add New Property</h2>
 <p>To add a new property, please enter the information below and click `Submit`!</p>
 <form id="add-property-form" method="POST" action="/add-property-form">
@@ -66,7 +76,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script src="/js/delete_property.js"></script>
 
-
+<!-- Form to update existing property -->
 <h2>Update Property Information</h2>
 <p>Select a property from the drop-down menu and update its details.</p>
 <form id="update-property-form-ajax">
